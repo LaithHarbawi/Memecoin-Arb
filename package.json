@@ -1,0 +1,14 @@
+{
+  "name": "memecoin-pro",
+  "version": "1.0.0",
+  "description": "MemeCoin Pro decoy site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2"
+  }
+}
