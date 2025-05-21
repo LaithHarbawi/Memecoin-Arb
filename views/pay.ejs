@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Complete Payment - MemeCoin Pro</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+    .payment-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .wallet-address {
+      font-family: monospace;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #dee2e6;
+      word-break: break-all;
+    }
+    .crypto-icon {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+    .qr-code {
+      max-width: 200px;
+      margin: 0 auto;
+      display: block;
+    }
+    .payment-method {
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: all 0.3s;
+    }
+    .payment-method:hover {
+      border-color: #2a5298;
+      box-shadow: 0 0 10px rgba(42,82,152,0.1);
+    }
+    .security-badge {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 50px;
+      background: #e9ecef;
+      color: #495057;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1e3c72;">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-chart-line me-2"></i>MemeCoin Pro
+      </a>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <% if (thankYou) { %>
+          <div class="payment-card p-5 text-center">
+            <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+            <h2>Thank You!</h2>
+            <p class="lead">Your payment has been received and is being processed.</p>
+            <p>You will receive access credentials via email shortly.</p>
+            <a href="/" class="btn btn-primary mt-3">Return to Homepage</a>
+          </div>
+        <% } else { %>
+          <!-- Payment Instructions -->
+          <div class="payment-card p-4">
+            <h2 class="mb-4">Complete Your Payment</h2>
+            
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i>
+              Select your preferred payment method below
+            </div>
+
+            <!-- Bitcoin Payment -->
+            <div class="payment-method">
+              <div class="d-flex align-items-center mb-3">
+                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" class="crypto-icon">
+                <h4 class="mb-0">Pay with Bitcoin</h4>
+              </div>
+              <img src="https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg" alt="BTC QR Code" class="qr-code mb-3">
+              <div class="wallet-address mb-3">
+                1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="navigator.clipboard.writeText('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Ethereum Payment -->
+            <div class="payment-method">
+              <div class="d-flex align-items-center mb-3">
+                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH" class="crypto-icon">
+                <h4 class="mb-0">Pay with Ethereum</h4>
+              </div>
+              <img src="https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg" alt="ETH QR Code" class="qr-code mb-3">
+              <div class="wallet-address mb-3">
+                0x742d35Cc6634C0532925a3b844Bc454e4438f44e
+                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="navigator.clipboard.writeText('0x742d35Cc6634C0532925a3b844Bc454e4438f44e')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- USDT Payment -->
+            <div class="payment-method">
+              <div class="d-flex align-items-center mb-3">
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" class="crypto-icon">
+                <h4 class="mb-0">Pay with USDT</h4>
+              </div>
+              <img src="https://images.pexels.com/photos/730564/pexels-photo-730564.jpeg" alt="USDT QR Code" class="qr-code mb-3">
+              <div class="wallet-address mb-3">
+                TQ1zP1eP5QGefi2DMPTfTL5SLmv7DivfNb
+                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="navigator.clipboard.writeText('TQ1zP1eP5QGefi2DMPTfTL5SLmv7DivfNb')">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <form method="GET" action="/pay" class="text-center">
+              <button type="submit" name="thankyou" value="1" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-check me-2"></i>I've Completed the Payment
+              </button>
+            </form>
+          </div>
+
+          <!-- Security Information -->
+          <div class="payment-card p-4">
+            <h5 class="mb-3">
+              <i class="fas fa-shield-alt me-2"></i>
+              Secure Payment Information
+            </h5>
+            <div class="d-flex flex-wrap justify-content-center mb-3">
+              <span class="security-badge m-1">
+                <i class="fas fa-lock me-1"></i>SSL Encrypted
+              </span>
+              <span class="security-badge m-1">
+                <i class="fas fa-shield-alt me-1"></i>Protected Transaction
+              </span>
+              <span class="security-badge m-1">
+                <i class="fas fa-history me-1"></i>24/7 Monitoring
+              </span>
+            </div>
+            <small class="text-muted d-block text-center">
+              All transactions are secured and encrypted
+            </small>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
