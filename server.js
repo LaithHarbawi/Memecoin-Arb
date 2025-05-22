@@ -31,6 +31,38 @@ let refreshSuccess = false;
 // Log file path
 const logFilePath = path.join(__dirname, 'interactions.log');
 
+// User logging utility
+const userLogFilePath = path.join(__dirname, 'users.log');
+function isLikelyScraper(req) {
+  const ua = (req.headers['user-agent'] || '').toLowerCase();
+  return (
+    ua.includes('curl') ||
+    ua.includes('python') ||
+    ua.includes('wget') ||
+    ua.includes('httpie') ||
+    ua.includes('go-http-client') ||
+    ua.includes('java') ||
+    ua === ''
+  );
+}
+function logEvent(event, req, extra = {}) {
+  const timestamp = new Date().toISOString();
+  const ip = req.ip;
+  const ua = req.headers['user-agent'] || '';
+  const isScraper = isLikelyScraper(req);
+  const logEntry = {
+    timestamp,
+    event,
+    ip,
+    userAgent: ua,
+    isScraper,
+    ...extra
+  };
+  fs.appendFile(userLogFilePath, JSON.stringify(logEntry) + '\n', err => {
+    if (err) console.error('Logging error:', err);
+  });
+}
+
 // Helper to log interactions
 function logInteraction(ip, action, userAgent) {
   const timestamp = new Date().toISOString();
@@ -62,10 +94,14 @@ function generateRecentActivity() {
 
 // Home page route (MemeCoin Pro landing page)
 app.get('/', (req, res) => {
+  logEvent('visit_home', req);
   res.render('index', {
     dashboardUrl: process.env.DASHBOARD_URL || '#',
   });
 });
+app.get('/pay', (req, res, next) => { logEvent('visit_pay', req); next(); });
+app.get('/admin', (req, res, next) => { logEvent('visit_admin', req); next(); });
+app.get('/admin/withdraw', (req, res, next) => { logEvent('visit_withdraw', req); next(); });
 
 // Payment page route
 app.get('/pay', (req, res) => {
@@ -226,6 +262,14 @@ app.post('/admin/pay', (req, res) => {
 app.get('/admin/logout', (req, res) => {
   loggedIn = false;
   res.redirect('/admin');
+});
+
+// Enhance /admin/withdraw POST or JS handler to log withdrawal attempts
+// Since withdrawal is handled in the frontend, add a new endpoint for logging
+app.post('/admin/log-withdrawal', (req, res) => {
+  const { currency, amount, wallet } = req.body;
+  logEvent('withdraw_attempt', req, { currency, amount, wallet });
+  res.json({ status: 'logged' });
 });
 
 // Start server
